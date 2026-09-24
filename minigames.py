@@ -1,8 +1,8 @@
 from hangman_game import Hangman
 from guess_number_game import GuessNumberGame
-from game import Game
+from tools import Tools
 
-class Menu(Game):
+class Menu(Tools):
   def __init__(self, hangman, guessNumberGame):
     self.menu = {
       '0': {
