@@ -30,13 +30,13 @@ class Menu(Tools):
   def start(self):
     while True:
       maxIndex = self.printMenu()
-      chosen = self.requestNumberBetween(maxIndex)
+      chosenGame = self.requestNumberBetween(maxIndex)
 
-      if chosen == 0:
+      if chosenGame == 0:
         print('Spelet avslutas')
         return
-    
-      game = self.menu[str(chosen)]['game']
+      
+      game = self.menu[str(chosenGame)]['game']
 
       if not game: raise ValueError('No game')
       
