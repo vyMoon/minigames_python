@@ -44,7 +44,9 @@ class Hangman(Tools):
     print(self.messages['intro'])
     self.errMax = self.getLevel()
     print(self.messages['startGame'])
+    self.runGame()
   
+  def runGame(self):
     while True:
       letter = self.requestLetter().lower()
       self.setAttempts(letter)
@@ -56,23 +58,28 @@ class Hangman(Tools):
       print('\n')
 
   def getLevel(self):
-    maxLevel = 0
-
     print(self.messages['setStart'])
-
+    self.printLevels()
+    chosenLevel = self.requestNumberBetween(
+      self.getMaxLevelKey()
+    )
+    return self.levels[str(chosenLevel)]['err']
+  
+  def printLevels(self):
     for index, level in self.levels.items():
       print(self.messages['level'].format(
         levelNumber=index, 
         levelName=level['name'],
         err=level['err'])
       )
-
-      num = int(index)
-      if maxLevel < num: maxLevel = num
-    
-    chosenLevel = self.requestNumberBetween(maxLevel)
-    return self.levels[str(chosenLevel)]['err']
-
+  
+  def getMaxLevelKey(self):
+    max = 0
+    for key in self.levels.keys():
+      number = int(key)
+      if max < number: max = number
+    return max
+  
   def setAttempts(self, letter):
     message = ''
     if letter in self.secret:
