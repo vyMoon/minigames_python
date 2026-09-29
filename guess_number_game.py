@@ -36,9 +36,13 @@ class GuessNumberGame(Tools):
 
   def start(self):
     print(self.messages['intro'])
-    self.secret = self.setLevel()
+    self.secret = self.getSecret(
+      self.getLevel()
+    )
     print(self.messages['start'])
-
+    self.runGame()
+  
+  def runGame(self):
     while True:
       self.attemptCounter += 1
       number = self.requestNumber()
@@ -52,10 +56,8 @@ class GuessNumberGame(Tools):
         comparison = 'högt' if number > self.secret else 'lågt'
         print(self.messages['notWin'].format(number= number, comparison=comparison))
 
-  def setLevel(self):
-    maxLevel = 0
-    print(self.messages['setStart'], '\n')
 
+  def printLevels(self):
     for index, level in self.levels.items():
       print(self.messages['setLevel'].format(
         levelNumber=index, 
@@ -63,12 +65,29 @@ class GuessNumberGame(Tools):
         min=self.minNumber, 
         max=level['max'])
       )
-      num = int(index)
-      if maxLevel < num: maxLevel = num
 
+  def getMaxLevelKey(self):
+    max = 0
+    for key in self.levels.keys():
+      number = int(key)
+      if max < number: max = number
+    return max
+
+  def getSecret(self, chosenLevel):
+    return random.randint(
+      self.minNumber,
+      self.levels[str(chosenLevel)]['max']
+    )
+
+  def getLevel(self):
+    print(self.messages['setStart'], '\n')
+    self.printLevels()
     print('\n')
-    chosenLevel = self.requestNumberBetween(maxLevel)
-    return random.randint(self.minNumber, self.levels[str(chosenLevel)]['max'])
+
+    chosenLevel = self.requestNumberBetween(
+      self.getMaxLevelKey()
+    )
+    return chosenLevel
 
 # game = GuessNumberGame()
 # game.start()
